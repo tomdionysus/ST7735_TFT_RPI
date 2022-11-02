@@ -49,6 +49,7 @@ void Test12(void); // 2  color bitmap
 void Test14(void); // 24 color bitmap
 void Test15(void); // 16 color bitmap 
 void TestFPS(void); // Frames per second
+void TestDoom(void); // Frames per second
 void EndTests(void);
 
 // Utility
@@ -88,7 +89,8 @@ int main(void)
 	// Test12();
 	// Test14();
 	// Test15();
-	TestFPS();
+	// TestFPS();
+	TestDoom();
 
 	// EndTests();
 	return 0;
@@ -615,6 +617,50 @@ void TestFPS(void) {
 	// Free Up Buffers
 	for(int i=0; i<5; i++) free(img[i]);
 }
+
+void TestDoom(void) {
+
+	const uint FRAMES = 100;
+	
+	// Clear The Screen
+	myTFT.TFTfillRectangle(0, 0, 160, 80, ST7735_BLACK);
+
+	char buffer[1024];
+
+	// Load images into buffers
+	uint8_t* img[FRAMES];
+	int j = 0;
+
+	for(int i=0; i<100; i++) {
+		sprintf(buffer, "bitmap/doom/img%06d.bmp", i+50);
+		img[i] = loadImage(buffer);
+	}
+
+	int64_t start = getTime(), duration = 0;
+	uint32_t frames = 0;
+	double fps = 0;
+
+	// Run for ~10sec
+	while(duration < 10000000) {
+		myTFT.TFTdrawBitmap24(0, 0, img[frames % FRAMES], 160, 80);
+
+		duration = getTime() - start;
+
+		if((++frames % 100) == 0) {
+			fps = (double)frames / ((double)duration / 1000000);
+			printf("%.2ffps\n", fps);
+		}
+	}
+
+	// Get final Stats and print
+	duration = getTime() - start;
+	fps = (double)frames / ((double)duration / 1000000);
+	printf("%d frames, %lld sec, %.2f fps\n", frames, duration / 1000000, fps);
+
+	// Free Up Buffers
+	for(int i=0; i<FRAMES; i++) free(img[i]);
+}
+
 
 void EndTests(void)
 {
