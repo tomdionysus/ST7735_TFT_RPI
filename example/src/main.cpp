@@ -106,10 +106,12 @@ void Setup(void)
 	int8_t SCLK_TFT = -1; // 11,  change to GPIO no for software spi
 	int8_t SDIN_TFT = -1; // 10, change to GPIO no for software spi
 	int8_t CS_TFT = -1 ;  // 8, change to GPIO no for software spi
+	int32_t SCLK_FREQ = 12500000; // 12500000 == 12.5MHz, clock speed when using hardware spi
 //**********************************************************
 	bcm2835_delay(TEST_DELAY1);
 	printf("TFT Start\r\n");
 	myTFT.TFTSetupGPIO(RST_TFT, DC_TFT ,CS_TFT , SCLK_TFT, SDIN_TFT);
+	myTFT.TFTInitSPIClockFrequency(SCLK_FREQ);
 	myTFT.TFTInitScreenSize(OFFSET_COL, OFFSET_ROW , TFT_WIDTH , TFT_HEIGHT);
 // ******** USER OPTION 3 PCB_TYPE **************************
 // init PCB type , pass enum 4 choices, see readme
