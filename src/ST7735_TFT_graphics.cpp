@@ -825,13 +825,13 @@ void ST7735_TFT_graphics::spiWrite(uint8_t spidata) {
 	if (_hardwareSPI == false)
 	{
 		spiWriteSoftware(spidata);
-	}else{
+	} else {
 		bcm2835_spi_transfer(spidata);
 	}
 }
 
-// Desc: Write a buffer to SPI, both Software and hardware SPI supported
-// Param1:  byte to send
+// Desc: Write a byte to SPI using software SPI
+// Param1: byte to send
 
 void ST7735_TFT_graphics::spiWriteSoftware(uint8_t spidata) {
 	uint8_t i;
@@ -847,7 +847,8 @@ void ST7735_TFT_graphics::spiWriteSoftware(uint8_t spidata) {
 }
 
 // Desc: Write a buffer to SPI, both Software and hardware SPI supported
-// Param1:  byte to send
+// Param1: bytes to send
+// Param2: length of buffer
 
 void ST7735_TFT_graphics::spiWriteBuffer(uint8_t* spidata, uint32_t len) {
 	if(_hardwareSPI == false) {
